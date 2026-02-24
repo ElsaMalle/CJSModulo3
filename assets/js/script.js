@@ -3,21 +3,21 @@ console.log("estamos conectados al js");
 const products = [
     {
         id: crypto.randomUUID(),
-        name: "Cámara Pro Mirrorless",
-        category: "Fotografía",
+        name: "Camara Pro Mirrorless",
+        category: "Fotografia",
         price: 850000,
         stock: 4,
     },
     {
         id: crypto.randomUUID(),
         name: "Lente 50mm f/1.8",
-        category: "Fotografía",
+        category: "Fotografia",
         price: 199990,
         stock: 10,
     },
     {
         id: crypto.randomUUID(),
-        name: "Trípode de Carbono",
+        name: "Tripode de Carbono",
         category: "Soporte",
         price: 75000,
         stock: 15,
@@ -25,7 +25,7 @@ const products = [
     {
         id: crypto.randomUUID(),
         name: "Foco LED RGB 60W",
-        category: "Iluminación",
+        category: "Iluminacion",
         price: 120000,
         stock: 8,
     },
@@ -39,7 +39,7 @@ const products = [
     {
         id: crypto.randomUUID(),
         name: "Softbox Octogonal",
-        category: "Iluminación",
+        category: "Iluminacion",
         price: 55000,
         stock: 12,
     },
@@ -52,7 +52,7 @@ const products = [
     },
     {
         id: crypto.randomUUID(),
-        name: "Mochila Técnica",
+        name: "Mochila Tecnica",
         category: "Transporte",
         price: 89990,
         stock: 20,
