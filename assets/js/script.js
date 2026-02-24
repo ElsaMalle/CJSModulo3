@@ -82,3 +82,47 @@ const crearTabla = () => {
     return (tablaArray.join(''))
 }
 document.getElementById('creaTabla').innerHTML = crearTabla();
+
+//Calcular el valor total del inventario
+ValorTotal = products.reduce((total, product) => total + product.price * product.stock, 0);
+document.getElementById('valorTotal').textContent = `$${ValorTotal}`;
+
+//buscar elementos
+
+function BuscarProd() {
+    const input = document.getElementById("searchInput");
+    const contenedor = document.getElementById("resultadoBusqueda");
+    const busqueda = input.value.trim();
+
+    contenedor.innerHTML = ""; 
+
+    if (busqueda === "") {
+        alert("Por favor ingrese Producto que desea encontrar");
+        return;
+    }
+
+    const resultados = products.filter((p) => 
+        p.name.toLowerCase().includes(busqueda.toLowerCase())
+    );
+
+    if (resultados.length > 0) {
+        resultados.forEach((prod) => {
+            // Creamos un bloque de HTML para cada producto
+            const infoProducto = `
+                <div class="producto-item">
+                    <p><strong>Nombre:</strong> ${prod.name}</p>
+                    <p><strong>Stock:</strong> ${prod.stock}</p>
+                    <hr>
+                </div>
+            `;
+            contenedor.innerHTML += infoProducto;
+        });
+    } else {
+        contenedor.innerHTML = `<p>No existen coincidencias con "${busqueda}", por favor intente nuevamente</p>`;
+    }
+}
+
+
+//const resultado= products.filter((X) => X.name == "Lente 50mm f/1.8");
+//console.log(resultado); 
+
