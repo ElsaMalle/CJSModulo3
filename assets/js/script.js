@@ -195,6 +195,7 @@ btnAgregar.addEventListener('click', (e) => {
         const existe = products.some(p => p.name.toLowerCase() === nombre.toLowerCase());
         if (existe) {
             alert(`¡Error! Ya existe un producto llamado "${nombre}".`);
+            limpiarFormularioAgregar();
             return;
         }
 
