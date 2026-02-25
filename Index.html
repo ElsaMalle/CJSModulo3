@@ -52,12 +52,12 @@
 
         <!--columna derecha-->
         <section class="col-12 col-lg-4">
-            <div class="d-flex gap-2">
-                <div class="col border border-primary">
+            <div class="d-flex gap-2 ">
+                <div class="col border border-primary rounded">
                     <p class="text-center py-2 mb-0">Buscar Producto</p>
                     <div class="d-flex flex-wrap gap-2 justify-content-end justify-content-between">
                         <div class="flex-grow-1">
-                        <input id="searchInput" class="form-control" placeholder="Buscar por nombre" />
+                            <input id="searchInput" class="form-control" placeholder="Buscar por nombre" />
                         </div>
                         <div class="category-width">
                             <div class="d-flex align-items-center justify-content-center mb-2">
@@ -68,34 +68,53 @@
                         <div id="resultadoBusqueda"></div>
                     </div>
                     <hr class="border-primary opacity-100">
-                    
-                    <p class="text-center mb-0 py-2">Agregar Nuevo Producto</p>
-                    <div class="d-flex justify-content-end gap-2 mb-3">
-                        <label class="form-label mb-1" for="AgregarProductoInput">Producto</label>
-                        <input id="AgregarProductoInput" class="form-control" placeholder="Nombre del Producto" />
+                    <div class="container p-4 border rounded bg-light shadow-sm">
+                        <p class="text-center fw-bold mb-4 py-2 border-bottom">Datos de Productos</p>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-end fw-semibold"
+                                for="AgregarProductoInput">Producto</label>
+                            <div class="col-sm-9">
+                                <input id="AgregarProductoInput" class="form-control"
+                                    placeholder="Nombre del Producto" />
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-end fw-semibold"
+                                for="AgregarCategoriaInput">Categoría</label>
+                            <div class="col-sm-9">
+                                <input id="AgregarCategoriaInput" class="form-control"
+                                    placeholder="Categoría del Producto" />
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-end fw-semibold"
+                                for="AgregarPrecioInput">Precio</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input id="AgregarPrecioInput" type="number" step="1" class="form-control"
+                                        placeholder="Ej: 5000" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-end fw-semibold"
+                                for="AgregarCantidadInput">Cantidad</label>
+                            <div class="col-sm-9">
+                                <input id="AgregarCantidadInput" type="number" class="form-control"
+                                    placeholder="Cantidad en stock" />
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a id="loadProductForm" class="btn btn-primary px-5 shadow-sm">Agregar Producto</a>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-end gap-2 mb-3">
-                        <label class="form-label mb-1" for="AgregarCategoriaInput">Categoria</label>
-                        <input id="AgregarCategoriaInput" class="form-control" placeholder="Categoría del Producto" />
-                    </div>
-                    <div class="d-flex justify-content-end gap-2 mb-3">
-                        <label class="form-label mb-1" for="AgregarPrecioInput">Precio</label>
-                        <input id="AgregarPrecioInput" class="form-control" placeholder="Precio del Producto" />
-                    </div>
-                    <div class="d-flex justify-content-end gap-2 mb-3 align-items-center">
-                        <label class="form-label mb-1" for="AgregarCantidadInput">Cantidad</label>
-                        <input id="AgregarCantidadInput" class="form-control" placeholder="Stock del Producto" />
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-3">
-                        <a href="#" class="btn btn-outline-primary">Agregar Producto</a>
-                    </div>
-                    
-
                 </div>
+            </div>
         </section>
-
     </div>
-
+    <footer class="text-center mt-4">
+        <p>&copy; 2026 Elsa Malle Lechuga. Todos los derechos reservados.</p>
+    </footer>
 </body>
-
 </html>

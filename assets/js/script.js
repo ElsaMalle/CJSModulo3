@@ -65,27 +65,22 @@ const crearTabla = () => {
         <tr>
             <td>${product.name}</td>
             <td>${product.category}</td>
-            <td class="text-end">$${product.price}</td>
-            <td class="text-center">
-                <!-- Botones para agregar y restar produtos -->
-                <div class="input-group input-group-sm justify-content-center">
-                    <button class="btn btn-outline-danger" type="button">-</button>
-                    <input type="text" class="form-control text-center" value="${product.stock}"
-                        style="max-width: 50px;">
-                    <button class="btn btn-outline-success" type="button">+</button>
-                </div>
+            <td class="text-center">$${product.price}</td>
+            <td class="text-center"> ${product.stock} </td>
+            <td class="text-center">     
+                <button onclick="Modificar('${product.id}')" class="btn btn-outline-success" type="button">Modificar</button>
+                <button onclick="Eliminar('${product.id}')" class="btn btn-outline-danger" type="button">Eliminar</button>
             </td>
         </tr>
         `,
     );
+    //Calcular el valor total del inventario
+    ValorTotal = products.reduce((total, product) => total + product.price * product.stock, 0);
+    document.getElementById('valorTotal').textContent = `$${ValorTotal}`;
 
     return (tablaArray.join(''))
 }
 document.getElementById('creaTabla').innerHTML = crearTabla();
-
-//Calcular el valor total del inventario
-ValorTotal = products.reduce((total, product) => total + product.price * product.stock, 0);
-document.getElementById('valorTotal').textContent = `$${ValorTotal}`;
 
 //buscar elementos
 
@@ -94,14 +89,14 @@ function BuscarProd() {
     const contenedor = document.getElementById("resultadoBusqueda");
     const busqueda = input.value.trim();
 
-    contenedor.innerHTML = ""; 
+    contenedor.innerHTML = "";
 
     if (busqueda === "") {
         alert("Por favor ingrese Producto que desea encontrar");
         return;
     }
 
-    const resultados = products.filter((p) => 
+    const resultados = products.filter((p) =>
         p.name.toLowerCase().includes(busqueda.toLowerCase())
     );
 
@@ -122,7 +117,106 @@ function BuscarProd() {
     }
 }
 
+//boton eliminar producto
 
-//const resultado= products.filter((X) => X.name == "Lente 50mm f/1.8");
-//console.log(resultado); 
+const Eliminar = (idABuscar) => {
+    const indice = products.findIndex(product => product.id === idABuscar);
 
+    if (indice !== -1) {
+        const confirmar = confirm(`¿Estás seguro de que deseas eliminar "${products[indice].name}"?`);
+        if (confirmar) {
+            products.splice(indice, 1);
+            document.getElementById('creaTabla').innerHTML = crearTabla();
+            alert("Producto eliminado con éxito");
+        }
+    } else {
+        console.error("No se encontró el producto con ID:", idABuscar);
+    }
+}
+
+//boton modificar producto
+
+let idProductoEditando = null; 
+const Modificar = (idABuscar) => {
+    const producto = products.find(p => p.id === idABuscar);
+
+    if (producto) {
+        
+        document.getElementById('AgregarProductoInput').value = producto.name;
+        document.getElementById('AgregarCategoriaInput').value = producto.category;
+        document.getElementById('AgregarPrecioInput').value = producto.price;
+        document.getElementById('AgregarCantidadInput').value = producto.stock;
+        const btnAccion = document.getElementById('loadProductForm');
+        btnAccion.innerText = "Aceptar Modificación";
+        btnAccion.classList.replace('btn-outline-primary', 'btn-warning'); 
+        
+        idProductoEditando = idABuscar; 
+        document.getElementById('AgregarProductoInput').focus();
+    }
+};
+
+
+//agregar producto
+
+const btnAgregar = document.getElementById('loadProductForm');
+
+btnAgregar.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById('AgregarProductoInput').value.trim();
+    const categoria = document.getElementById('AgregarCategoriaInput').value;
+    const precio = Number(document.getElementById('AgregarPrecioInput').value);
+    const stock = Number(document.getElementById('AgregarCantidadInput').value);
+
+    if (!nombre || !precio || !stock) {
+        alert("Por favor, completa todos los campos con valores válidos.");
+        return;
+    }
+    if (precio <= 0 || stock < 0) {
+        alert("El precio debe ser mayor a 0 y el stock no puede ser negativo.");
+        return;
+    }
+    if (idProductoEditando) {
+        const indice = products.findIndex(p => p.id === idProductoEditando);
+        
+        products[indice] = {
+            ...products[indice],
+            name: nombre,
+            category: categoria,
+            price: precio,
+            stock: stock
+        };
+        alert("¡Producto modificado con éxito!");
+        
+        idProductoEditando = null;
+        btnAgregar.innerText = "Agregar Producto";
+        btnAgregar.classList.replace('btn-warning', 'btn-outline-primary');
+    } else {
+        const existe = products.some(p => p.name.toLowerCase() === nombre.toLowerCase());
+        if (existe) {
+            alert(`¡Error! Ya existe un producto llamado "${nombre}".`);
+            limpiarFormularioAgregar();
+            return;
+        }
+
+        const nuevoProducto = {
+            id: crypto.randomUUID(), 
+            name: nombre,
+            category: categoria,
+            price: precio,
+            stock: stock
+        };
+        products.push(nuevoProducto);
+        alert("¡Producto agregado con éxito!");
+    }
+
+    document.getElementById('creaTabla').innerHTML = crearTabla();
+    limpiarFormularioAgregar();
+});
+
+const limpiarFormularioAgregar = () => {
+    document.getElementById('AgregarProductoInput').value = "";
+    document.getElementById('AgregarCategoriaInput').value = "";
+    document.getElementById('AgregarPrecioInput').value = "";
+    document.getElementById('AgregarCantidadInput').value = "";
+};
