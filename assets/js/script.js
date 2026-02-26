@@ -1,63 +1,23 @@
 console.log("estamos conectados al js");
 
 const products = [
-    {
-        id: crypto.randomUUID(),
-        name: "Camara Pro Mirrorless",
-        category: "Fotografia",
-        price: 850000,
-        stock: 4,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Lente 50mm f/1.8",
-        category: "Fotografia",
-        price: 199990,
-        stock: 10,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Tripode de Carbono",
-        category: "Soporte",
-        price: 75000,
-        stock: 15,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Foco LED RGB 60W",
-        category: "Iluminacion",
-        price: 120000,
-        stock: 8,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Tarjeta SD 128GB V60",
-        category: "Almacenamiento",
-        price: 45990,
-        stock: 25,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Softbox Octogonal",
-        category: "Iluminacion",
-        price: 55000,
-        stock: 12,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Estabilizador de 3 Ejes",
-        category: "Soporte",
-        price: 320000,
-        stock: 6,
-    },
-    {
-        id: crypto.randomUUID(),
-        name: "Mochila Tecnica",
-        category: "Transporte",
-        price: 89990,
-        stock: 20,
-    }
+    { id: crypto.randomUUID(), name: "Camara Pro Mirrorless", category: "Fotografia", price: 850000, stock: 4 },
+    { id: crypto.randomUUID(), name: "Lente 50mm f/1.8", category: "Fotografia", price: 199990, stock: 10 },
+    { id: crypto.randomUUID(), name: "Tripode de Carbono", category: "Soporte", price: 75000, stock: 15 },
+    { id: crypto.randomUUID(), name: "Foco LED RGB 60W", category: "Iluminacion", price: 120000, stock: 8 },
+    { id: crypto.randomUUID(), name: "Tarjeta SD 128GB V60", category: "Almacenamiento", price: 45990, stock: 25 },
+    { id: crypto.randomUUID(), name: "Softbox Octogonal", category: "Iluminacion", price: 55000, stock: 12 },
+    { id: crypto.randomUUID(), name: "Estabilizador de 3 Ejes", category: "Soporte", price: 320000, stock: 6 },
+    { id: crypto.randomUUID(), name: "Mochila Tecnica", category: "Transporte", price: 89990, stock: 20 }
 ];
+
+// New formatting function added for CLP
+const formatearCLP = (numero) => {
+    return new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+    }).format(Math.round(numero));
+};
 
 const crearTabla = () => {
     const tablaArray = products.map(
@@ -65,7 +25,7 @@ const crearTabla = () => {
         <tr>
             <td>${product.name}</td>
             <td>${product.category}</td>
-            <td class="text-center">$${product.price}</td>
+            <td class="text-center">${formatearCLP(product.price)}</td>
             <td class="text-center"> ${product.stock} </td>
             <td class="text-center">     
                 <button onclick="Modificar('${product.id}')" class="btn btn-outline-success" type="button">Modificar</button>
@@ -74,15 +34,14 @@ const crearTabla = () => {
         </tr>
         `,
     );
-    //Calcular el valor total del inventario
-    ValorTotal = products.reduce((total, product) => total + product.price * product.stock, 0);
-    document.getElementById('valorTotal').textContent = `$${ValorTotal}`;
 
+    ValorTotal = products.reduce((total, product) => total + product.price * product.stock, 0);
+    document.getElementById('valorTotal').textContent = formatearCLP(ValorTotal);
     return (tablaArray.join(''))
 }
 document.getElementById('creaTabla').innerHTML = crearTabla();
 
-//buscar elementos
+//buscar productos
 
 function BuscarProd() {
     const input = document.getElementById("searchInput");
@@ -95,14 +54,11 @@ function BuscarProd() {
         alert("Por favor ingrese Producto que desea encontrar");
         return;
     }
-
     const resultados = products.filter((p) =>
         p.name.toLowerCase().includes(busqueda.toLowerCase())
     );
-
     if (resultados.length > 0) {
         resultados.forEach((prod) => {
-            // Creamos un bloque de HTML para cada producto
             const infoProducto = `
                 <div class="producto-item">
                     <p><strong>Nombre:</strong> ${prod.name}</p>
@@ -117,7 +73,7 @@ function BuscarProd() {
     }
 }
 
-//boton eliminar producto
+//eliminar productos
 
 const Eliminar = (idABuscar) => {
     const indice = products.findIndex(product => product.id === idABuscar);
@@ -134,29 +90,27 @@ const Eliminar = (idABuscar) => {
     }
 }
 
-//boton modificar producto
 
-let idProductoEditando = null; 
+//modificar productos
+let idProductoEditando = null;
 const Modificar = (idABuscar) => {
     const producto = products.find(p => p.id === idABuscar);
 
     if (producto) {
-        
         document.getElementById('AgregarProductoInput').value = producto.name;
         document.getElementById('AgregarCategoriaInput').value = producto.category;
         document.getElementById('AgregarPrecioInput').value = producto.price;
         document.getElementById('AgregarCantidadInput').value = producto.stock;
         const btnAccion = document.getElementById('loadProductForm');
         btnAccion.innerText = "Aceptar Modificación";
-        btnAccion.classList.replace('btn-outline-primary', 'btn-warning'); 
-        
-        idProductoEditando = idABuscar; 
+        btnAccion.classList.replace('btn-outline-primary', 'btn-warning');
+        idProductoEditando = idABuscar;
         document.getElementById('AgregarProductoInput').focus();
     }
 };
 
 
-//agregar producto
+//agregar productos
 
 const btnAgregar = document.getElementById('loadProductForm');
 
@@ -178,7 +132,7 @@ btnAgregar.addEventListener('click', (e) => {
     }
     if (idProductoEditando) {
         const indice = products.findIndex(p => p.id === idProductoEditando);
-        
+
         products[indice] = {
             ...products[indice],
             name: nombre,
@@ -187,7 +141,6 @@ btnAgregar.addEventListener('click', (e) => {
             stock: stock
         };
         alert("¡Producto modificado con éxito!");
-        
         idProductoEditando = null;
         btnAgregar.innerText = "Agregar Producto";
         btnAgregar.classList.replace('btn-warning', 'btn-outline-primary');
@@ -198,9 +151,8 @@ btnAgregar.addEventListener('click', (e) => {
             limpiarFormularioAgregar();
             return;
         }
-
         const nuevoProducto = {
-            id: crypto.randomUUID(), 
+            id: crypto.randomUUID(),
             name: nombre,
             category: categoria,
             price: precio,
@@ -209,7 +161,6 @@ btnAgregar.addEventListener('click', (e) => {
         products.push(nuevoProducto);
         alert("¡Producto agregado con éxito!");
     }
-
     document.getElementById('creaTabla').innerHTML = crearTabla();
     limpiarFormularioAgregar();
 });
@@ -220,3 +171,5 @@ const limpiarFormularioAgregar = () => {
     document.getElementById('AgregarPrecioInput').value = "";
     document.getElementById('AgregarCantidadInput').value = "";
 };
+
+
